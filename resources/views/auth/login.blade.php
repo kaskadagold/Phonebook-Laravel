@@ -1,0 +1,34 @@
+<x-layouts.app page-title="Авторизация">
+
+    {{-- @if (session('status'))
+        <x-panels.messages.success class="mb-4" :status="session('status')" />
+    @endif --}}
+
+
+    <x-forms.form method="POST" action="{{ route('login') }}">
+        @csrf
+
+        <x-forms.concrete-forms-fields.auth.email />
+
+        <x-forms.concrete-forms-fields.auth.password />
+
+        <x-forms.groups.checkbox-group>
+            <x-slot:label>Запомнить меня</x-slot:label>
+            <x-forms.inputs.checkbox
+                name="remember_me"
+                :checked="old('remember_me')"
+            />
+        </x-forms.groups.checkbox-group>
+
+        <x-forms.row>
+            <x-forms.submit-button>
+                Войти
+            </x-forms.submit-button>
+            @if (Route::has('password.request'))
+                <a class="font-20 ml-10" href="{{ route('password.request') }}">
+                    Забыли пароль?
+                </a>
+            @endif
+        </x-forms.row>
+    </x-forms.form>
+</x-layouts.app>

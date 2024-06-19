@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PagesController::class, 'home'])->name('home');
+Route::get('/create', [PagesController::class, 'create'])->name('create');
+Route::get('/update', [PagesController::class, 'update'])->name('update');
+
+require __DIR__.'/auth.php';

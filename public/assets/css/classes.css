@@ -1,0 +1,29 @@
+.block {
+    display: block;
+}
+
+.inline-flex {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    row-gap: 10px;
+    text-wrap: nowrap;
+    margin-bottom: 10px;
+}
+
+.checkbox {
+    margin: 0 10px 0 0;
+}
+
+.submit-button {
+    padding: 12px 20px;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
