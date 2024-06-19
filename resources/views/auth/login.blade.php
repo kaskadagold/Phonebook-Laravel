@@ -1,8 +1,10 @@
 <x-layouts.app page-title="Авторизация">
 
-    {{-- @if (session('status'))
-        <x-panels.messages.success class="mb-4" :status="session('status')" />
-    @endif --}}
+    @if (session('status'))
+        <x-panels.messages.success :messages="(array) session('status')" />
+    @endif
+
+    <x-panels.messages.form-validation-errors />
 
 
     <x-forms.form method="POST" action="{{ route('login') }}">
@@ -12,7 +14,7 @@
 
         <x-forms.concrete-forms-fields.auth.password />
 
-        <x-forms.groups.checkbox-group>
+        <x-forms.groups.checkbox-group error="{{ $errors->first('remember_me') }}">
             <x-slot:label>Запомнить меня</x-slot:label>
             <x-forms.inputs.checkbox
                 name="remember_me"

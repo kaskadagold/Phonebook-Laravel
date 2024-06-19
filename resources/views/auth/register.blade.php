@@ -1,8 +1,10 @@
 <x-layouts.app page-title="Регистрация">
+    <x-panels.messages.form-validation-errors />
+
     <x-forms.form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <x-forms.groups.group for="name">
+        <x-forms.groups.group for="name" error="{{ $errors->first('name') }}">
             <x-slot:label>Имя</x-slot:label>
             <x-forms.inputs.text
                 id="name"
@@ -10,6 +12,7 @@
                 placeholder="Иванов Иван Иванович"
                 required autofocus
                 value="{{ old('name') }}"
+                error="{{ $errors->first('name') }}"
             />
         </x-forms.groups.group>
 

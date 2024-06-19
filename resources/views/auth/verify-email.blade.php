@@ -1,9 +1,9 @@
 <x-layouts.app page-title="Подтверждение регистрации">
-    {{-- @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('Ссылка на завершение регистрации была отправлена на Ваш email') }}
-        </div>
-    @endif --}}
+    @if (session('status') == 'verification-link-sent')
+        <x-panels.messages.success :messages="['Ссылка на завершение регистрации была отправлена на Ваш email']" />
+    @endif
+
+    <x-panels.messages.form-validation-errors />
 
     <x-forms.form method="POST" action="{{ route('verification.send') }}">
         @csrf

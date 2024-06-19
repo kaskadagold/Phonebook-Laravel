@@ -1,4 +1,6 @@
 <x-layouts.app page-title="Сброс пароля">
+    <x-panels.messages.form-validation-errors />
+
     <x-forms.form method="POST" action="{{ route('password.store') }}">
         @csrf
 

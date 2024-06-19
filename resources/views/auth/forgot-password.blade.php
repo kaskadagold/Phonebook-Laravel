@@ -1,5 +1,11 @@
 <x-layouts.app page-title="Восстановление пароля">
 
+    @if (session('status'))
+        <x-panels.messages.success :messages="(array) session('status')" />
+    @endif
+
+    <x-panels.messages.form-validation-errors />
+
     <x-forms.form method="POST" action="{{ route('password.email') }}">
         @csrf
 
