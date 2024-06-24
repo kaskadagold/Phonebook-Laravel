@@ -27,7 +27,7 @@
                 Войти
             </x-forms.submit-button>
             @if (Route::has('password.request'))
-                <a class="font-20 ml-10" href="{{ route('password.request') }}">
+                <a class="text-20 ml-10" href="{{ route('password.request') }}">
                     Забыли пароль?
                 </a>
             @endif

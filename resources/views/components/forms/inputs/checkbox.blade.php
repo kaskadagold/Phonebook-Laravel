@@ -3,7 +3,7 @@
 <input
     type="checkbox"
     @class([
-        'checkbox',
+        'mr-10',
         'border-red' => !empty($error),
         $attributes->get('class'),
     ])

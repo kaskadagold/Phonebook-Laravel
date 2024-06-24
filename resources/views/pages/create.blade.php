@@ -1,18 +1,22 @@
 <x-layouts.app >
 
-    <div class="titleBack">
-        <h2>Добавление нового контакта</h2>
+    <div class="flex content-between py-15">
+        <h2 class="m-0 font-bold">Добавление нового контакта</h2>
 
         <a href="/">
-            <button>Вернуться к списку контактов</button>
+            <button class="text-18 font-bold text-white bg-purple px-30 py-15 rounded-25 pointer">Вернуться к списку контактов</button>
         </a>
     </div>
 
-    <div class="creationForm">
-        <form>
-            <x-forms.contact_form_fields />
+    <div class="py-15">
+        <x-panels.messages.form-validation-errors />
 
-            <input type="submit" name="addButton" value="Добавить">
-        </form>
+        <x-forms.form>
+            <x-forms.concrete-forms-fields.contact-form-fields />
+
+            <x-forms.submit-button>
+                Добавить
+            </x-forms.submit-button>
+        </x-forms.form>
     </div>
 </x-layouts.app>

@@ -25,7 +25,7 @@
                 Регистрация
             </x-forms.submit-button>
 
-            <a class="font-20 ml-10" href="{{ route('login') }}">
+            <a class="text-20 ml-10" href="{{ route('login') }}">
                 Уже зарегистрированы?
             </a>
         </x-forms.row>
