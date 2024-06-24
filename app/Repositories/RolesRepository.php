@@ -30,5 +30,15 @@ class RolesRepository implements RolesRepositoryContract
         ;
     }
 
+    public function getAdminId(): int
+    {
+        return $this->getModel()
+            ->with('users')
+            ->where('name', 'admin')
+            ->limit(1)
+            ->value('id')
+        ;
+    }
+
 
 }
