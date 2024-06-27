@@ -1,0 +1,29 @@
+.block {
+    display: block;
+}
+
+.inline-flex {
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    row-gap: 10px;
+    text-wrap: nowrap;
+    margin-bottom: 10px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.content-center {
+    justify-content: center;
+}
+
+.content-between {
+    justify-content: space-between;
+}
+
+.content-around {
+    justify-content: space-around;
+}
