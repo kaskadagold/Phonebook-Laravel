@@ -13,7 +13,7 @@ class RolesRepository implements RolesRepositoryContract
 
     private function getModel(): Role
     {
-        return $this->model;
+        return clone $this->model;
     }
 
     public function userIsAdmin(int $userId): bool
@@ -27,6 +27,16 @@ class RolesRepository implements RolesRepositoryContract
             ->whereHas('users', fn (Builder $query) => $query->where('id', $userId))
             ->where('name', $role)
             ->exists()
+        ;
+    }
+
+    public function getAdminId(): int
+    {
+        return $this->getModel()
+            ->with('users')
+            ->where('name', 'admin')
+            ->limit(1)
+            ->value('id')
         ;
     }
 

@@ -6,6 +6,10 @@
     width: 50px;
 }
 
+.mw-50 {
+    min-width: 50px;
+}
+
 .w-full {
     width: 100%;
 }
