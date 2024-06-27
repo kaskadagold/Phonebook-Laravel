@@ -15,7 +15,11 @@
 }
 
 .border-red {
-    border-color: rgb(165, 25, 25);
+    border: solid rgb(204, 31, 31);
+}
+
+.border-gray {
+    border: solid rgb(211, 211, 211);
 }
 
 .border-none {
@@ -26,8 +30,8 @@
     border-bottom: 1px solid;
 }
 
-.border-1-gray {
-    border: 1px solid rgb(211, 211, 211);
+.border-1 {
+    border-width: 1px;
 }
 
 .box-shadow {

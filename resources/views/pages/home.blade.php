@@ -13,10 +13,14 @@
     <div>
         <h3>Список контактов</h3>
 
-        @if ($contacts->isEmpty())
-            <p class="text-18">Нет сохраненных контактов...</p>
+        @if ($contacts->isNotEmpty())
+            <x-contacts.table>
+                @foreach ($contacts as $contact)
+                    <x-contacts.table-item :contact="$contact" />
+                @endforeach
+            </x-contacts.table>
         @else
-            <x-contacts.table :contacts="$contacts" />
+            <p class="text-18">Нет сохраненных контактов...</p>
         @endif
     </div>
 

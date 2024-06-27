@@ -10,18 +10,17 @@ class ContactsRepository
     {
     }
     
-    public function getContacts(): Collection
+    public function getContacts(int $userId): Collection
     {
         return $this->getModel()
-            ->where('user_id', $this->getUserId())
+            ->where('user_id', $userId)
             ->get()
         ;
     }
 
     public function create(array $fields): Contact
     {
-        $finalFields = array_merge(['user_id' => $this->getUserId()], $fields);
-        return $this->getModel()->create($finalFields);
+        return $this->getModel()->create($fields);
     }
 
     public function update(int $id, array $fields): Contact
@@ -45,25 +44,24 @@ class ContactsRepository
         ;
     }
 
-    public function checkPresense(int $userId, string $name, string $phone): bool
+    public function checkPresense(?int $id, int $userId, string $name, string $phone): bool
     {
-        return $this->getModel()
+        $query = $this->getModel()
             ->where([
                 ['user_id', '=', $userId],
                 ['name', '=', $name],
                 ['phone', '=', $phone],
-            ])
-            ->exists()
-        ;
+            ]);
+
+        if ($id !== null) {
+            $query = $query->where('id', '!=', $id);
+        }
+
+        return $query->exists();
     }
 
     public function getModel(): Contact
     {
-        return $this->model;
-    }
-
-    private function getUserId(): ?int
-    {
-        return auth()->user()?->id;
+        return clone $this->model;
     }
 }

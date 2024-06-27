@@ -19,10 +19,10 @@
     <x-forms.inputs.text
         id="contactPhone"
         name="phone"
-        placeholder="xxx-xxx-xx-xx"
+        placeholder="+7-xxx-xxx-xx-xx"
         value="{{ old('phone', $contact->phone) }}"
         error="{{ $errors->first('phone') }}"
-        pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
+        pattern="[\+][0-9]{1,3}[-][0-9]{3}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}"
         required
     />
 </x-forms.groups.group>

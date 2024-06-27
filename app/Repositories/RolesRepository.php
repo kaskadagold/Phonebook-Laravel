@@ -13,7 +13,7 @@ class RolesRepository implements RolesRepositoryContract
 
     private function getModel(): Role
     {
-        return $this->model;
+        return clone $this->model;
     }
 
     public function userIsAdmin(int $userId): bool

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\Repositories\RolesRepositoryContract;
+use App\Contracts\Services\FlashMessageContract;
 use App\Repositories\ContactsRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Rules\UniqueContact;
+
 
 class ContactsController extends Controller
 {
@@ -20,7 +22,10 @@ class ContactsController extends Controller
      */
     public function index(): View
     {
-        $contacts = $this->contactsRepository->getContacts();
+        $contacts = collect();
+        if ($userId = $this->getUserId()) {
+            $contacts = $this->contactsRepository->getContacts($userId);
+        }
         return view('pages.home', ['contacts' => $contacts]);
     }
 
@@ -35,9 +40,16 @@ class ContactsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $this->contactsRepository->create($request->only('name', 'phone'));
+    public function store(
+        Request $request,
+        FlashMessageContract $flashMessage,
+    ): RedirectResponse {
+        $fields = ($request->merge(['id' => null, 'user_id' => $this->getUserId()]))
+                    ->validate($this->getValidationRules());
+
+        $this->contactsRepository->create($fields);
+
+        $flashMessage->success('Новый контакт успешно добавлен');
 
         return redirect()->route('contact.index');
     }
@@ -55,9 +67,17 @@ class ContactsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id): RedirectResponse
-    {
-        $this->contactsRepository->update($id, $request->only('name', 'phone'));
+    public function update(
+        Request $request,
+        int $id,
+        FlashMessageContract $flashMessage,
+    ): RedirectResponse {
+        $fields = ($request->merge(['id' => $id, 'user_id' => $this->getUserId()]))
+                    ->validate($this->getValidationRules());
+
+        $this->contactsRepository->update($id, $fields);
+
+        $flashMessage->success('Контакт успешно обновлен');
 
         return redirect()->route('contact.index');
     }
@@ -65,10 +85,36 @@ class ContactsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id): RedirectResponse
-    {
+    public function destroy(
+        int $id,
+        FlashMessageContract $flashMessage,
+    ): RedirectResponse {
         $this->contactsRepository->delete($id);
 
+        $flashMessage->success('Контакт успешно удален');
+
         return redirect()->route('contact.index');
+    }
+
+    private function getUserId(): ?int
+    {
+        return auth()->user()?->id;
+    }
+
+    private function getValidationRules(): array
+    {
+        return [
+            'user_id' => ['required', 'int'],
+            'name' => [
+                'required',
+                'string',
+                new UniqueContact(),
+            ],
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^[\+][0-9]{1,3}[-][0-9]{3}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/',
+            ],
+        ];
     }
 }
