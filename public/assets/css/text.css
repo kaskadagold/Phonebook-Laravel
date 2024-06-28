@@ -42,6 +42,10 @@
     font-style: italic;
 }
 
+.underline {
+    text-decoration: underline;
+}
+
 .text-green {
     color: rgb(15, 104, 48);
 }
@@ -52,4 +56,12 @@
 
 .text-white {
     color: white;
+}
+
+.text-purple {
+    color: rebeccapurple;
+}
+
+.hover-text-purple:hover {
+    color: rebeccapurple;
 }
