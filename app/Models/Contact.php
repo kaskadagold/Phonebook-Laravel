@@ -11,7 +11,7 @@ class Contact extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'phone'];
+    protected $fillable = ['user_id', 'name', 'phone', 'priority_id'];
 
     protected $casts = [
         'phone' => PhoneCast::class,
@@ -20,5 +20,10 @@ class Contact extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function priority(): BelongsTo
+    {
+        return $this->belongsTo(Priority::class);
     }
 }

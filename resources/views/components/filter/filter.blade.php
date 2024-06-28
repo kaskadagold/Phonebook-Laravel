@@ -24,11 +24,11 @@
     <hr class="mb-15">
     <x-forms.inline>
         <div class="font-bold text-18">Сортировать по:</div>
-        <x-filter.sort-button name="order_name" current-value="{{ request()->get('order_name') }}">
-            Имени
-        </x-filter.sort-button>
         <x-filter.sort-button name="order_priority" current-value="{{ request()->get('order_priority') }}">
             Приоритету
+        </x-filter.sort-button>
+        <x-filter.sort-button name="order_name" current-value="{{ request()->get('order_name') }}">
+            Имени
         </x-filter.sort-button>
     </x-forms.inline>
 </form>

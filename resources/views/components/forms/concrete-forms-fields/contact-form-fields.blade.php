@@ -1,5 +1,3 @@
-@props(['contact'])
-
 @csrf
 
 <x-forms.groups.group for="contactName" error="{{ $errors->first('name') }}">
@@ -25,4 +23,22 @@
         pattern="[\+][7][-][0-9]{3}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}"
         required
     />
+</x-forms.groups.group>
+
+<x-forms.groups.group for="contactPriority" error="{{ $errors->first('priority') }}">
+    <x-slot:label>Приоритет</x-slot:label>
+    <x-forms.inputs.select
+        id="contactPriority"
+        name="priority_id"
+        error="{{ $errors->first('priority') }}"
+    >
+        @foreach ($priorities as $priority) 
+            <option
+                @selected($priority->id === old('priority_id', $contact->priority_id))
+                value="{{ $priority->id }}"
+            >
+                {{ $priority->name }}
+            </option>
+        @endforeach
+    </x-forms.inputs.select>
 </x-forms.groups.group>

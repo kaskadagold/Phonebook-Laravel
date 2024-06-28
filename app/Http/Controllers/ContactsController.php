@@ -28,6 +28,7 @@ class ContactsController extends Controller
     {
         $contacts = collect();
         $listFilterDTO = new ListFilterDTO();
+
         if ($userId = $this->getUserId()) {
             // $contacts = $this->contactsRepository->getContacts($userId);
 
@@ -129,6 +130,7 @@ class ContactsController extends Controller
                 'string',
                 'regex:/^[\+][7][-][0-9]{3}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/',
             ],
+            'priority_id' => ['required', 'int'],
         ];
     }
 

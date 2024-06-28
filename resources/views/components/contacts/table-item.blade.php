@@ -19,6 +19,7 @@
             </button>
         </a>
     </td>
-    <td class="w-1_2 px-10 py-5">{{ $contact->name }}</td>
-    <td class="w-1_2 px-10 py-5">{{ $contact->phone }}</td>
+    <td class="w-1_3 px-10 py-5">{{ $contact->name }}</td>
+    <td class="w-1_3 px-10 py-5">{{ $contact->phone }}</td>
+    <td class="w-1_3 px-10 py-5">{{ $contact->priority->name }}</td>
 </tr>
