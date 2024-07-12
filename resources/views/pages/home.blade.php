@@ -13,6 +13,8 @@
     <div>
         <h3>Список контактов</h3>
 
+        <x-filter.filter :filter-values="$filterValues" />
+
         @if ($contacts->isNotEmpty())
             <x-contacts.table>
                 @foreach ($contacts as $contact)

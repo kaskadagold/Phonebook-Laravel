@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Contact>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Priority>
  */
-class ContactFactory extends Factory
+class PriorityFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,8 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'phone' => '7' . fake()->numerify('##########'),
+            'name' => fake()->word(),
+            'level' => fake()->randomNumber(2),
         ];
     }
 }
