@@ -131,4 +131,8 @@ return [
         ],
     ],
 
+    'admin' => [
+        'email' => env('MAIL_ADMIN'),
+    ],
+
 ];

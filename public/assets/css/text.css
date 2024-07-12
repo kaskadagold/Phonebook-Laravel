@@ -1,0 +1,67 @@
+.font-times {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.text-12 {
+    font-size: 0.75rem;
+}
+
+.text-16 {
+    font-size: 1rem;
+}
+
+.text-18 {
+    font-size: 1.125rem;
+}
+
+.text-20 {
+    font-size: 1.25rem;
+}
+
+.text-24 {
+    font-size: 1.5rem;
+}
+
+.text-32 {
+    font-size: 2rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-start {
+    text-align: start;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.text-green {
+    color: rgb(15, 104, 48);
+}
+
+.text-red {
+    color: rgb(165, 25, 25);
+}
+
+.text-white {
+    color: white;
+}
+
+.text-purple {
+    color: rebeccapurple;
+}
+
+.hover-text-purple:hover {
+    color: rebeccapurple;
+}

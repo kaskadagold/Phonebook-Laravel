@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\PagesController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::get('/', [ContactsController::class, 'index'])->name('contact.index');
+
+Route::post('/', [ContactsController::class, 'store'])->name('contact.store');
+Route::get('/create', [ContactsController::class, 'create'])->name('contact.create');
+
+Route::get('/{contact}/edit', [ContactsController::class, 'edit'])->name('contact.edit');
+Route::put('/{contact}', [ContactsController::class, 'update'])->name('contact.update');
+
+Route::delete('/{contact}', [ContactsController::class, 'destroy'])->name('contact.destroy');
+
+require __DIR__.'/auth.php';
