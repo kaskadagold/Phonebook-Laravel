@@ -24,6 +24,8 @@ class ContactsService implements ContactCreationServiceContract,
             $fields['image_id'] = $image->id;
         }
 
+        $this->contactsRepository->flushCache();
+
         return $this->contactsRepository->create($fields);
     }
 
@@ -44,6 +46,8 @@ class ContactsService implements ContactCreationServiceContract,
             $this->imagesService->deleteFile($oldImageId);
         }
 
+        $this->contactsRepository->flushCache();
+
         return $contact;
     }
 
@@ -56,5 +60,7 @@ class ContactsService implements ContactCreationServiceContract,
         }
 
         $this->contactsRepository->delete($id);
+
+        $this->contactsRepository->flushCache();
     }
 }

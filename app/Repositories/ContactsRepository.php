@@ -8,11 +8,19 @@ use App\Models\Priority;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use App\DTO\ListFilterDTO;
+use Illuminate\Support\Facades\Cache;
 
 class ContactsRepository implements ContactsRepositoryContract
 {
+    use FlushesCache;
+
     public function __construct(private readonly Contact $model)
     {
+    }
+
+    protected function cacheTags(): array
+    {
+        return ['contacts'];
     }
 
     public function getContacts(int $userId, array $relations = []): Collection
@@ -43,11 +51,13 @@ class ContactsRepository implements ContactsRepositoryContract
 
     public function getById(int $id, array $relations = []): Contact
     {
-        return $this->getModel()
-            ->where('id', $id)
-            ->when($relations, fn ($query) => $query->with($relations))
-            ->first()
-        ;
+        return Cache::tags(['contacts', 'images', 'priorities'])->remember(
+            sprintf('contactById|%s|%s', $id,implode('|', $relations)),
+            3600,
+            fn () => $this->getModel()
+                ->when($relations, fn ($query) => $query->with($relations))
+                ->findOrFail($id)
+        );
     }
 
     public function checkPresense(?int $id, int $userId, string $name, string $phone): bool
@@ -78,6 +88,30 @@ class ContactsRepository implements ContactsRepositoryContract
         array $fields = ['contacts.*'],
         array $relations = [],
     ): Collection {
+        return Cache::tags(['contacts', 'images', 'priorities'])->remember(
+            sprintf(
+                'contactsForList|%s',
+                serialize([
+                    'userId' => $userId,
+                    'filter' => $listFilterDTO,
+                    'fields' => $fields,
+                    'relations' => $relations,
+                ])
+            ),
+            3600,
+            fn () => $this->listQuery($listFilterDTO, $userId)
+                ->when($relations, fn ($query) => $query->with($relations))
+                ->get($fields)
+        );
+    }
+
+    public function parsePhone(string $phone): string
+    {
+        return str_replace(['+', '-'], '', $phone);
+    }
+
+    private function listQuery(ListFilterDTO $listFilterDTO, int $userId): Builder
+    {
         return $this->getModel()
             ->when($listFilterDTO->getModel() !== null, fn ($query) =>
                 $query->where(fn ($query) =>
@@ -91,13 +125,6 @@ class ContactsRepository implements ContactsRepositoryContract
             )
             ->when($listFilterDTO->getOrderName() !== null, fn ($query) => $query->orderBy('contacts.name', $listFilterDTO->getOrderName()))
             ->where('contacts.user_id', '=', $userId)
-            ->when($relations, fn ($query) => $query->with($relations))
-            ->get($fields)
         ;
-    }
-
-    public function parsePhone(string $phone): string
-    {
-        return str_replace(['+', '-'], '', $phone);
     }
 }

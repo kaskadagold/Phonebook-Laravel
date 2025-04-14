@@ -34,6 +34,12 @@ ARG PGID
 RUN groupmod -o -g ${PGID} ${USERNAME} \
     && usermod -o -u ${PUID} -g ${USERNAME} ${USERNAME}
 
+WORKDIR /var/www/html
+
+# Laravel
+RUN mkdir -p /var/www/.config/psysh
+RUN chmod a+w /var/www/.config/psysh
+
 # Очистка кэша
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 

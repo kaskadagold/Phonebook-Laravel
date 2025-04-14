@@ -6,7 +6,7 @@ use App\DTO\ListFilterDTO;
 use App\Models\Contact;
 use Illuminate\Support\Collection;
 
-interface ContactsRepositoryContract
+interface ContactsRepositoryContract extends FlushCacheRepositoryContract
 {
     public function getModel(): Contact;
 

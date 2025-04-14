@@ -36,7 +36,7 @@ class ContactsController extends Controller
                 ->setOrderName($request->get('order_name'))
                 ->setOrderPriority($request->get('order_priority'))
             ;
-            $contacts = $this->contactsRepository->findForList($userId, $listFilterDTO, relations: ['image']);
+            $contacts = $this->contactsRepository->findForList($userId, $listFilterDTO, relations: ['image', 'priority']);
         }
 
         return view('pages.home', ['contacts' => $contacts, 'filterValues' => $listFilterDTO]);
@@ -74,7 +74,7 @@ class ContactsController extends Controller
      */
     public function edit(int $id): View
     {
-        $contact = $this->contactsRepository->getById($id, relations: ['image']);
+        $contact = $this->contactsRepository->getById($id, relations: ['image', 'priority']);
 
         return view('pages.update', ['contact' => $contact]);
     }

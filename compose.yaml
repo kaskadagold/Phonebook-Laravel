@@ -11,7 +11,7 @@ services:
     depends_on:
       - php81-fpm
     networks:
-      - nginx-php81-mysql8
+      - nginx-php81-mysql8-redis
 
   php81-fpm:
     build:
@@ -22,13 +22,12 @@ services:
       dockerfile: ./docker/php/Dockerfile
     container_name: php81-container-phonebook
     command: ["php-fpm"]
-    working_dir: /var/www/html
     ports:
       - "9001:9000"
     volumes:
       - ./:/var/www/html
     networks:
-      - nginx-php81-mysql8
+      - nginx-php81-mysql8-redis
 
   mysql8:
     image: mysql:8.0.39
@@ -36,7 +35,7 @@ services:
     ports:
       - "33306:3306"
     volumes:
-      - ./docker/backups:/docker-entrypoint-initdb.d
+      # - ./docker/backups:/docker-entrypoint-initdb.d
       - ./docker/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -44,10 +43,21 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     networks:
-      - nginx-php81-mysql8
+      - nginx-php81-mysql8-redis
 
-networks: 
-  nginx-php81-mysql8:
+  redis:
+    image: redis:latest
+    container_name: redis-container-phonebook
+    ports:
+      - "${REDIS_PORT}:${REDIS_DOCKER_PORT}"
+    volumes:
+      - ./docker/redis/data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - nginx-php81-mysql8-redis
+
+networks:
+  nginx-php81-mysql8-redis:
 
 volumes:
   mysql:
