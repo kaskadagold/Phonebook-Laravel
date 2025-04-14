@@ -8,6 +8,6 @@
         'border-red' => !empty($error),
         $attributes->get('class'),
     ])
-    {{ $attributes->except('class', 'type') }}
+    {{ $attributes->except(['class', 'type']) }}
     value="{{ $value }}"
 />

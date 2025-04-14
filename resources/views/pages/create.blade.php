@@ -11,7 +11,11 @@
     <div class="py-15">
         <x-panels.messages.form-validation-errors />
 
-        <x-forms.form method="POST" action="{{ route('contact.store') }}">
+        <x-forms.form
+            method="POST"
+            action="{{ route('contact.store') }}"
+            enctype="multipart/form-data"
+        >
             <x-forms.concrete-forms-fields.contact-form-fields :contact="$contact" />
 
             <x-forms.submit-button>

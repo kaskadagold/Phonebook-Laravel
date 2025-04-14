@@ -10,7 +10,11 @@
     <div class="py-15">
         <x-panels.messages.form-validation-errors />
 
-        <x-forms.form method="POST" action="{{ route('contact.update', ['contact' => $contact]) }}">
+        <x-forms.form
+            method="POST"
+            action="{{ route('contact.update', ['contact' => $contact]) }}"
+            enctype="multipart/form-data"
+        >
             @method('PUT')
 
             <x-forms.concrete-forms-fields.contact-form-fields :contact="$contact" />

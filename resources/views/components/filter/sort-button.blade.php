@@ -16,5 +16,4 @@
     @if ($showDescIcon())
         <img class="h-20" src="/assets/images/down.png" />
     @endif
-
 </button>

@@ -10,19 +10,19 @@ interface ContactsRepositoryContract
 {
     public function getModel(): Contact;
 
-    public function getContacts(int $userId): Collection;
+    public function getContacts(int $userId, array $relations = []): Collection;
 
     public function create(array $fields): Contact;
 
-    public function update(int $id, array $fields): Contact;
+    public function update(Contact $contact, array $fields): Contact;
 
     public function delete(int $id): void;
 
-    public function getById(int $id): Contact;
+    public function getById(int $id, array $relations = []): Contact;
 
     public function checkPresense(?int $id, int $userId, string $name, string $phone): bool;
 
-    public function findForList(int $userId, ListFilterDTO $listFilterDTO, array $fields = ['*']): Collection;
+    public function findForList(int $userId, ListFilterDTO $listFilterDTO, array $fields = ['*'], array $relations = []): Collection;
 
     public function parsePhone(string $phone): string;
 }

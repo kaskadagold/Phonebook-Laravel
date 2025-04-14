@@ -14,11 +14,12 @@ class ContactsRepository implements ContactsRepositoryContract
     public function __construct(private readonly Contact $model)
     {
     }
-    
-    public function getContacts(int $userId): Collection
+
+    public function getContacts(int $userId, array $relations = []): Collection
     {
         return $this->getModel()
             ->where('user_id', $userId)
+            ->when($relations, fn ($query) => $query->with($relations))
             ->get()
         ;
     }
@@ -28,9 +29,8 @@ class ContactsRepository implements ContactsRepositoryContract
         return $this->getModel()->create($fields);
     }
 
-    public function update(int $id, array $fields): Contact
+    public function update(Contact $contact, array $fields): Contact
     {
-        $contact = $this->getById($id);
         $contact->update($fields);
 
         return $contact;
@@ -41,10 +41,11 @@ class ContactsRepository implements ContactsRepositoryContract
         $this->getModel()->where('id', $id)->delete();
     }
 
-    public function getById(int $id): Contact
+    public function getById(int $id, array $relations = []): Contact
     {
         return $this->getModel()
             ->where('id', $id)
+            ->when($relations, fn ($query) => $query->with($relations))
             ->first()
         ;
     }
@@ -56,7 +57,8 @@ class ContactsRepository implements ContactsRepositoryContract
                 ['user_id', '=', $userId],
                 ['name', '=', $name],
                 ['phone', '=', $phone],
-            ]);
+            ])
+        ;
 
         if ($id !== null) {
             $query = $query->where('id', '!=', $id);
@@ -73,21 +75,23 @@ class ContactsRepository implements ContactsRepositoryContract
     public function findForList(
         int $userId,
         ListFilterDTO $listFilterDTO,
-        array $fields = ['contacts.*'],  
+        array $fields = ['contacts.*'],
+        array $relations = [],
     ): Collection {
         return $this->getModel()
-            ->when($listFilterDTO->getModel() !== null, fn ($query) => 
+            ->when($listFilterDTO->getModel() !== null, fn ($query) =>
                 $query->where(fn ($query) =>
                     $query->where('contacts.name', 'like', '%' . $listFilterDTO->getModel() . '%')
                         ->orWhere('contacts.phone', 'like', '%' . $this->parsePhone($listFilterDTO->getModel()) . '%')
                 )
             )
-            ->when($listFilterDTO->getOrderPriority() !== null, fn ($query) => 
+            ->when($listFilterDTO->getOrderPriority() !== null, fn ($query) =>
                 $query->leftJoin('priorities', 'priorities.id', '=', 'contacts.priority_id')
                     ->orderBy('priorities.level', $listFilterDTO->getOrderPriority())
             )
             ->when($listFilterDTO->getOrderName() !== null, fn ($query) => $query->orderBy('contacts.name', $listFilterDTO->getOrderName()))
             ->where('contacts.user_id', '=', $userId)
+            ->when($relations, fn ($query) => $query->with($relations))
             ->get($fields)
         ;
     }

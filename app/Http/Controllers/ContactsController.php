@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\ContactCreationServiceContract;
+use App\Contracts\Services\ContactRemoverServiceContract;
+use App\Contracts\Services\ContactUpdateServiceContract;
 use App\Contracts\Services\FlashMessageContract;
-use App\Repositories\ContactsRepository;
 use App\Contracts\Repositories\ContactsRepositoryContract;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,15 +32,13 @@ class ContactsController extends Controller
         $listFilterDTO = new ListFilterDTO();
 
         if ($userId = $this->getUserId()) {
-            // $contacts = $this->contactsRepository->getContacts($userId);
-
             $listFilterDTO = $listFilterDTO->setModel($request->get('model'))
                 ->setOrderName($request->get('order_name'))
                 ->setOrderPriority($request->get('order_priority'))
             ;
-            $contacts = $this->contactsRepository->findForList($userId, $listFilterDTO);
+            $contacts = $this->contactsRepository->findForList($userId, $listFilterDTO, relations: ['image']);
         }
-    
+
         return view('pages.home', ['contacts' => $contacts, 'filterValues' => $listFilterDTO]);
     }
 
@@ -55,13 +55,14 @@ class ContactsController extends Controller
      */
     public function store(
         Request $request,
+        ContactCreationServiceContract $contactCreationService,
         FlashMessageContract $flashMessage,
     ): RedirectResponse {
-        $fields = ($request->merge(['id' => null, 'user_id' => $this->getUserId()]))
-                    ->validate($this->getValidationRules());
+        $fields = $request->merge(['id' => null, 'user_id' => $this->getUserId()])
+            ->validate($this->getValidationRules());
         $this->passedValidation($fields);
 
-        $this->contactsRepository->create($fields);
+        $contactCreationService->create($fields);
 
         $flashMessage->success('Новый контакт успешно добавлен');
 
@@ -73,7 +74,7 @@ class ContactsController extends Controller
      */
     public function edit(int $id): View
     {
-        $contact = $this->contactsRepository->getById($id);
+        $contact = $this->contactsRepository->getById($id, relations: ['image']);
 
         return view('pages.update', ['contact' => $contact]);
     }
@@ -84,13 +85,14 @@ class ContactsController extends Controller
     public function update(
         Request $request,
         int $id,
+        ContactUpdateServiceContract $contactUpdateService,
         FlashMessageContract $flashMessage,
     ): RedirectResponse {
-        $fields = ($request->merge(['id' => $id, 'user_id' => $this->getUserId()]))
-                    ->validate($this->getValidationRules());
+        $fields = $request->merge(['id' => $id, 'user_id' => $this->getUserId()])
+            ->validate($this->getValidationRules());
         $this->passedValidation($fields);
 
-        $this->contactsRepository->update($id, $fields);
+        $contactUpdateService->update($id, $fields);
 
         $flashMessage->success('Контакт успешно обновлен');
 
@@ -102,9 +104,10 @@ class ContactsController extends Controller
      */
     public function destroy(
         int $id,
+        ContactRemoverServiceContract $contactRemoverService,
         FlashMessageContract $flashMessage,
     ): RedirectResponse {
-        $this->contactsRepository->delete($id);
+        $contactRemoverService->delete($id);
 
         $flashMessage->success('Контакт успешно удален');
 
@@ -131,6 +134,7 @@ class ContactsController extends Controller
                 'regex:/^[\+][7][-][0-9]{3}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/',
             ],
             'priority_id' => ['required', 'int'],
+            'image' => ['nullable', 'image'],
         ];
     }
 
