@@ -19,6 +19,19 @@
             </button>
         </a>
     </td>
+    <td class="px-10 py-5">
+        @if (! $contact->image)
+            <div class="w-50 h-50 flex content-center aspect-square">
+                <img class="w-2_3" src="{{ $contact->imageUrl }}" alt="{{ $contact->name }}">
+            </div>
+        @else
+            <div class="w-50 h-50 aspect-square">
+                <img src="{{ $contact->imageUrl }}" alt="{{ $contact->name }}"
+                    class="w-full h-full object-cover object-center rounded-25"
+                >
+            </div>
+        @endif
+    </td>
     <td class="w-1_3 px-10 py-5">{{ $contact->name }}</td>
     <td class="w-1_3 px-10 py-5">{{ $contact->phone }}</td>
     <td class="w-1_3 px-10 py-5">{{ $contact->priority->name }}</td>

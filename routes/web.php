@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ContactsController;
-use App\Http\Controllers\PagesController;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
 
 Route::get('/', [ContactsController::class, 'index'])->name('contact.index');
 

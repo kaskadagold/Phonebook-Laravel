@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/assets/css/padding.css">
     <link rel="stylesheet" href="/assets/css/sizes.css">
     <link rel="stylesheet" href="/assets/css/text.css">
+    <link rel="stylesheet" href="/assets/css/images.css">
 </head>
 
 <body>
