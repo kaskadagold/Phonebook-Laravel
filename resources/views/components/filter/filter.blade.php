@@ -4,9 +4,9 @@
     @csrf
 
     <x-forms.inline class="w-500 h-40 mt-5 mb-15">
-        <input 
-            class="w-full h-38 text-18 rounded-tl-20 rounded-bl-20 border-1 border-gray px-15 py-0 box-shadow h-38 focus-bg-change" 
-            type="text" 
+        <input
+            class="w-full h-38 text-18 rounded-tl-20 rounded-bl-20 border-1 border-gray px-15 py-0 box-shadow h-38 focus-bg-change"
+            type="text"
             placeholder="Поиск"
             name="model"
             value="{{ $filterValues->getModel() ?: '' }}"

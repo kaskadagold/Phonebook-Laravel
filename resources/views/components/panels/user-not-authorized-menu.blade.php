@@ -6,6 +6,6 @@
 
     <a class="flex content-between pointer" href="{{ route('login') }}">
         <img class="w-20 h-20 pr-3 pl-15" src="assets/images/authorization.png">
-        Авторизация                
+        Авторизация
     </a>
 </nav>

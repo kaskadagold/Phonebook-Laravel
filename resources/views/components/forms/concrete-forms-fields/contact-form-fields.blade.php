@@ -32,7 +32,7 @@
         name="priority_id"
         error="{{ $errors->first('priority') }}"
     >
-        @foreach ($priorities as $priority) 
+        @foreach ($priorities as $priority)
             <option
                 @selected($priority->id === old('priority_id', $contact->priority_id))
                 value="{{ $priority->id }}"
@@ -41,4 +41,13 @@
             </option>
         @endforeach
     </x-forms.inputs.select>
+</x-forms.groups.group>
+
+<x-forms.groups.group for="contactImage" error="{{ $errors->first('image') }}">
+    <x-slot:label>Изображение</x-slot:label>
+    <x-forms.inputs.file
+        id="contactImage"
+        name="image"
+        value="{{ $contact->image ? $contact->imageUrl : null }}"
+    />
 </x-forms.groups.group>

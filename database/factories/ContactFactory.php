@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Image;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Contact>
@@ -16,9 +17,16 @@ class ContactFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        $fields = [
             'name' => fake()->name(),
             'phone' => '7' . fake()->numerify('##########'),
         ];
+
+        /* Случайное добавление изображений контактам */
+        if (rand(0, 9) >= 4) {
+            $fields['image_id'] = Image::factory();
+        }
+
+        return $fields;
     }
 }

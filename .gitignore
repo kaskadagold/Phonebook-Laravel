@@ -1,13 +1,5 @@
 /.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
 /storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -15,6 +7,25 @@ auth.json
 npm-debug.log
 yarn-error.log
 /.fleet
-/.idea
-/.vscode
 /html/
+**/*.rdb
+
+# VS CODE Workspace files
+**/.vscode
+.editorconfig
+
+# IntelliJ IDE files
+**/.idea
+
+# Vendors
+/vendor/
+/node_modules/
+
+# .env files
+.env*
+!.env.example
+
+# Public assets (build files)
+/public/build
+/public/hot
+/public/storage
