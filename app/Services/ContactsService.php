@@ -29,9 +29,8 @@ class ContactsService implements ContactCreationServiceContract,
         return $this->contactsRepository->create($fields);
     }
 
-    public function update(int $id, array $fields): Contact
+    public function update(Contact $contact, array $fields): Contact
     {
-        $contact = $this->contactsRepository->getById($id);
         $oldImageId = null;
 
         if (! empty($fields['image'])) {
@@ -51,15 +50,13 @@ class ContactsService implements ContactCreationServiceContract,
         return $contact;
     }
 
-    public function delete(int $id): void
+    public function delete(Contact $contact): void
     {
-        $contact = $this->contactsRepository->getById($id);
-
         if (! empty($contact->image_id)) {
             $this->imagesService->deleteFile($contact->image_id);
         }
 
-        $this->contactsRepository->delete($id);
+        $this->contactsRepository->delete($contact);
 
         $this->contactsRepository->flushCache();
     }

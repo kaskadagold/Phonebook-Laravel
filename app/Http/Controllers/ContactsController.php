@@ -24,14 +24,12 @@ class ContactsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(
-        Request $request,
-    ): View
+    public function index(Request $request): View
     {
         $contacts = collect();
         $listFilterDTO = new ListFilterDTO();
 
-        if ($userId = $this->getUserId()) {
+        if ($userId = $request->user()?->id) {
             $listFilterDTO = $listFilterDTO->setModel($request->get('model'))
                 ->setOrderName($request->get('order_name'))
                 ->setOrderPriority($request->get('order_priority'))
@@ -58,7 +56,7 @@ class ContactsController extends Controller
         ContactCreationServiceContract $contactCreationService,
         FlashMessageContract $flashMessage,
     ): RedirectResponse {
-        $fields = $request->merge(['id' => null, 'user_id' => $this->getUserId()])
+        $fields = $request->merge(['id' => null, 'user_id' => $request->user()->id])
             ->validate($this->getValidationRules());
         $this->passedValidation($fields);
 
@@ -72,9 +70,13 @@ class ContactsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id): View
+    public function edit(Request $request, int $id): View | RedirectResponse
     {
         $contact = $this->contactsRepository->getById($id, relations: ['image', 'priority']);
+
+        if ($request->user()->cannot('update', $contact)) {
+            return redirect()->route('contact.index');
+        }
 
         return view('pages.update', ['contact' => $contact]);
     }
@@ -88,11 +90,18 @@ class ContactsController extends Controller
         ContactUpdateServiceContract $contactUpdateService,
         FlashMessageContract $flashMessage,
     ): RedirectResponse {
-        $fields = $request->merge(['id' => $id, 'user_id' => $this->getUserId()])
+        $contact = $this->contactsRepository->getById($id, relations: ['image', 'priority']);
+        $user = $request->user();
+
+        if ($user->cannot('update', $contact)) {
+            return redirect()->route('contact.index');
+        }
+
+        $fields = $request->merge(['id' => $id, 'user_id' => $user->id])
             ->validate($this->getValidationRules());
         $this->passedValidation($fields);
 
-        $contactUpdateService->update($id, $fields);
+        $contactUpdateService->update($contact, $fields);
 
         $flashMessage->success('Контакт успешно обновлен');
 
@@ -103,20 +112,23 @@ class ContactsController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(
+        Request $request,
         int $id,
         ContactRemoverServiceContract $contactRemoverService,
         FlashMessageContract $flashMessage,
     ): RedirectResponse {
-        $contactRemoverService->delete($id);
+        $contact = $this->contactsRepository->getById($id, relations: ['image', 'priority']);
+        $user = $request->user();
+
+        if ($user->cannot('delete', $contact)) {
+            return redirect()->route('contact.index');
+        }
+
+        $contactRemoverService->delete($contact);
 
         $flashMessage->success('Контакт успешно удален');
 
         return redirect()->route('contact.index');
-    }
-
-    private function getUserId(): ?int
-    {
-        return auth()->user()?->id;
     }
 
     private function getValidationRules(): array

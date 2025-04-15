@@ -23,15 +23,6 @@ class ContactsRepository implements ContactsRepositoryContract
         return ['contacts'];
     }
 
-    public function getContacts(int $userId, array $relations = []): Collection
-    {
-        return $this->getModel()
-            ->where('user_id', $userId)
-            ->when($relations, fn ($query) => $query->with($relations))
-            ->get()
-        ;
-    }
-
     public function create(array $fields): Contact
     {
         return $this->getModel()->create($fields);
@@ -44,9 +35,9 @@ class ContactsRepository implements ContactsRepositoryContract
         return $contact;
     }
 
-    public function delete(int $id): void
+    public function delete(Contact $contact): void
     {
-        $this->getModel()->where('id', $id)->delete();
+        $contact->delete();
     }
 
     public function getById(int $id, array $relations = []): Contact

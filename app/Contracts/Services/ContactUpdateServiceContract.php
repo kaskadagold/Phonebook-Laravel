@@ -6,5 +6,5 @@ use App\Models\Contact;
 
 interface ContactUpdateServiceContract
 {
-    public function update(int $id, array $fields): Contact;
+    public function update(Contact $contact, array $fields): Contact;
 }

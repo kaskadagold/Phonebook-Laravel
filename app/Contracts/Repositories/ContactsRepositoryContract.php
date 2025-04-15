@@ -10,13 +10,11 @@ interface ContactsRepositoryContract extends FlushCacheRepositoryContract
 {
     public function getModel(): Contact;
 
-    public function getContacts(int $userId, array $relations = []): Collection;
-
     public function create(array $fields): Contact;
 
     public function update(Contact $contact, array $fields): Contact;
 
-    public function delete(int $id): void;
+    public function delete(Contact $contact): void;
 
     public function getById(int $id, array $relations = []): Contact;
 

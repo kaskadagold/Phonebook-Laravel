@@ -8,6 +8,7 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /html/
+**/*.rdb
 
 # VS CODE Workspace files
 **/.vscode
